@@ -63,7 +63,6 @@ typedef struct
   uint8_t Indication_Status;
   UTIL_TIMER_Object_t TimerMeasurement_Id;
   uint32_t StartTick;
-  uint8_t Paired;
   /* USER CODE END Service3_APP_Context_t */
   uint16_t              ConnectionHandle;
 } BCS_APP_Context_t;
@@ -144,24 +143,18 @@ void BCS_Notification(BCS_NotificationEvt_t *p_Notification)
 
     case BCS_BCM_INDICATE_ENABLED_EVT:
       /* USER CODE BEGIN Service3Char2_INDICATE_ENABLED_EVT */
-      if(BCS_APP_Context.Paired == TRUE)
-      {  
-        BCS_APP_Context.Indication_Status = 1;
-        
-        UTIL_TIMER_Stop(&(BCS_APP_Context.TimerMeasurement_Id));
-        UTIL_TIMER_StartWithPeriod(&(BCS_APP_Context.TimerMeasurement_Id), BCS_APP_MEASUREMENT_INTERVAL);
-      }
+      BCS_APP_Context.Indication_Status = 1;
+      
+      UTIL_TIMER_Stop(&(BCS_APP_Context.TimerMeasurement_Id));
+      UTIL_TIMER_StartWithPeriod(&(BCS_APP_Context.TimerMeasurement_Id), BCS_APP_MEASUREMENT_INTERVAL);
       /* USER CODE END Service3Char2_INDICATE_ENABLED_EVT */
       break;
 
     case BCS_BCM_INDICATE_DISABLED_EVT:
       /* USER CODE BEGIN Service3Char2_INDICATE_DISABLED_EVT */
-      if(BCS_APP_Context.Paired == TRUE)
-      {  
-        BCS_APP_Context.Indication_Status = 0;
-        
-        UTIL_TIMER_Stop(&(BCS_APP_Context.TimerMeasurement_Id));
-      }
+      BCS_APP_Context.Indication_Status = 0;
+      
+      UTIL_TIMER_Stop(&(BCS_APP_Context.TimerMeasurement_Id));
       /* USER CODE END Service3Char2_INDICATE_DISABLED_EVT */
       break;
 
@@ -198,7 +191,7 @@ void BCS_APP_EvtRx(BCS_APP_ConnHandleNotEvt_t *p_Notification)
     /* USER CODE END Service3_APP_EvtRx_Service3_EvtOpcode */
     case BCS_CONN_HANDLE_EVT :
       /* USER CODE BEGIN Service3_APP_CONN_HANDLE_EVT */
-      BCS_APP_Context.Paired = p_Notification->PairingComplete;
+
       /* USER CODE END Service3_APP_CONN_HANDLE_EVT */
       break;
 

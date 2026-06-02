@@ -63,7 +63,6 @@ typedef struct
   uint8_t Indication_Status;
   UTIL_TIMER_Object_t TimerMeasurement_Id;
   uint32_t StartTick;
-  uint8_t Paired;
   /* USER CODE END Service2_APP_Context_t */
   uint16_t              ConnectionHandle;
 } WSS_APP_Context_t;
@@ -148,19 +147,13 @@ void WSS_Notification(WSS_NotificationEvt_t *p_Notification)
 
     case WSS_MNBS_INDICATE_ENABLED_EVT:
       /* USER CODE BEGIN Service2Char2_INDICATE_ENABLED_EVT */
-      if(WSS_APP_Context.Paired == TRUE)
-      {
-        WSS_APP_Context.Indication_Status = 1;
-      }
+      WSS_APP_Context.Indication_Status = 1;
       /* USER CODE END Service2Char2_INDICATE_ENABLED_EVT */
       break;
 
     case WSS_MNBS_INDICATE_DISABLED_EVT:
       /* USER CODE BEGIN Service2Char2_INDICATE_DISABLED_EVT */
-      if(WSS_APP_Context.Paired == TRUE)
-      {
-        WSS_APP_Context.Indication_Status = 0;
-      }
+      WSS_APP_Context.Indication_Status = 0;
       /* USER CODE END Service2Char2_INDICATE_DISABLED_EVT */
       break;
 
@@ -194,7 +187,7 @@ void WSS_APP_EvtRx(WSS_APP_ConnHandleNotEvt_t *p_Notification)
     /* USER CODE END Service2_APP_EvtRx_Service2_EvtOpcode */
     case WSS_CONN_HANDLE_EVT :
       /* USER CODE BEGIN Service2_APP_CONN_HANDLE_EVT */
-      WSS_APP_Context.Paired = p_Notification->PairingComplete;
+
       /* USER CODE END Service2_APP_CONN_HANDLE_EVT */
       break;
 
